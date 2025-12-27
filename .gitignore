@@ -59,5 +59,4 @@ coverage/
 # Test files
 *.mocks.dart
 
-# Claude
-CLAUDE.md
+# Note: CLAUDE.md is kept in repo for comprehensive documentation
