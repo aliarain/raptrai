@@ -112,27 +112,33 @@ class _SuggestionGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: RaptrAIColors.spacingMd,
-      runSpacing: RaptrAIColors.spacingMd,
-      children: suggestions.map((suggestion) {
-        return SizedBox(
-          width: _calculateWidth(context),
-          child: _SuggestionCard(
-            suggestion: suggestion,
-            onTap: onTap != null ? () => onTap!(suggestion) : null,
-          ),
+    // Use LayoutBuilder to get actual available width from constraints
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = _calculateWidth(constraints.maxWidth);
+        return Wrap(
+          spacing: RaptrAIColors.spacingMd,
+          runSpacing: RaptrAIColors.spacingMd,
+          children: suggestions.map((suggestion) {
+            return SizedBox(
+              width: cardWidth,
+              child: _SuggestionCard(
+                suggestion: suggestion,
+                onTap: onTap != null ? () => onTap!(suggestion) : null,
+              ),
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 
-  double _calculateWidth(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    const maxWidth = 600.0;
-    final availableWidth = screenWidth < maxWidth ? screenWidth - 48 : maxWidth;
+  double _calculateWidth(double availableWidth) {
+    const minCardWidth = 120.0; // Minimum card width to prevent negative values
     final gapWidth = RaptrAIColors.spacingMd * (columns - 1);
-    return (availableWidth - gapWidth) / columns;
+    final calculatedWidth = (availableWidth - gapWidth) / columns;
+    // Ensure we never return a negative or too-small width
+    return calculatedWidth > minCardWidth ? calculatedWidth : minCardWidth;
   }
 }
 
