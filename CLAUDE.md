@@ -6,7 +6,7 @@ A **raptrx.com** product. The ultimate Flutter framework for building production
 
 RaptrAI is not just a UI kit - it's a complete AI framework that provides:
 - **Multi-Provider AI Integration**: OpenAI, Anthropic Claude, Google Gemini
-- **60+ UI Components**: shadcn/ui-inspired, beautiful and composable
+- **60+ UI Components**: modern-inspired, beautiful and composable
 - **Conversation Management**: Full state management with branching
 - **Tool/Function Calling**: Register and execute tools with auto-UI
 - **Persistence Layer**: Offline-first with Hive, cloud sync ready
@@ -62,7 +62,7 @@ lib/
     │   ├── usage_tracker.dart           # Token & cost tracking
     │   └── analytics.dart               # Event analytics
     │
-    ├── assistant/                       # Assistant-UI Components
+    ├── assistant/                       # Thread & Assistant Components
     │   ├── thread.dart                  # Thread, ThreadWelcome, ThreadMessages
     │   ├── thread_list.dart             # ThreadList, ThreadListItem
     │   ├── composer.dart                # Composer with attachments
@@ -982,7 +982,7 @@ class RaptrAINewComponent extends StatelessWidget {
 ## Design Principles
 
 1. **Complete Framework**: Not just UI - full AI integration
-2. **shadcn-inspired**: Clean, minimal, composable design
+2. **modern**: Clean, minimal, composable design
 3. **Multi-Provider**: No vendor lock-in
 4. **Offline-First**: Local storage with cloud sync
 5. **Production-Ready**: Usage tracking, analytics, rate limiting
