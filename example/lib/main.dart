@@ -434,6 +434,7 @@ class _MainScreenState extends State<MainScreen> {
       const ChatDemoScreen(),
       ComponentsScreen(usageTracker: _usageTracker),
       ToolsDemo(toolRegistry: _toolRegistry),
+      DefaultsDemo(usageTracker: _usageTracker, toolRegistry: _toolRegistry),
     ];
 
     return Scaffold(
@@ -481,6 +482,11 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.build_outlined),
             selectedIcon: Icon(Icons.build),
             label: 'Tools',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.auto_fix_high_outlined),
+            selectedIcon: Icon(Icons.auto_fix_high),
+            label: 'Defaults',
           ),
         ],
       ),
@@ -1641,6 +1647,401 @@ class _SectionHeader extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
       ),
+    );
+  }
+}
+
+// =============================================================================
+// DEFAULTS DEMO - Showcase opinionated default UX widgets
+// =============================================================================
+
+class DefaultsDemo extends StatefulWidget {
+  const DefaultsDemo({
+    required this.usageTracker,
+    required this.toolRegistry,
+    super.key,
+  });
+
+  final RaptrAIUsageTracker usageTracker;
+  final RaptrAIToolRegistry toolRegistry;
+
+  @override
+  State<DefaultsDemo> createState() => _DefaultsDemoState();
+}
+
+class _DefaultsDemoState extends State<DefaultsDemo> {
+  bool _showRetryBanner = false;
+  bool _showAutoRetryBanner = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        // Introduction
+        RaptrAICard(
+          style: RaptrAICardStyle.filled,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.auto_fix_high, color: RaptrAIColors.accent),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Opinionated Default UX',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'RaptrAI provides opinionated default widgets for common UX patterns like errors, usage limits, retries, and tool approvals. These are ready to use out of the box.',
+                  style: TextStyle(
+                    color: isDark
+                        ? RaptrAIColors.darkTextSecondary
+                        : RaptrAIColors.lightTextSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Error States Section
+        const _SectionHeader(title: 'Error States'),
+        const Text(
+          'Full-screen error state with retry button:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          height: 280,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: isDark ? RaptrAIColors.darkBorder : RaptrAIColors.lightBorder,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: RaptrAIErrorState(
+              error: const RaptrAIException(
+                message: 'Failed to connect to the AI service',
+                code: 'connection_error',
+                provider: 'OpenAI',
+                statusCode: 503,
+              ),
+              onRetry: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Retry triggered!')),
+                );
+              },
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          'Inline error widget:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        RaptrAIErrorInline(
+          message: 'Rate limit exceeded. Please wait before sending more messages.',
+          onRetry: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Retry triggered!')),
+            );
+          },
+        ),
+        const SizedBox(height: 24),
+
+        // Usage Limit Section
+        const _SectionHeader(title: 'Usage Limits'),
+        const Text(
+          'Full-screen usage limit reached:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          height: 320,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: isDark ? RaptrAIColors.darkBorder : RaptrAIColors.lightBorder,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: RaptrAIUsageLimitReached(
+              limitType: RaptrAILimitType.dailyTokens,
+              tracker: widget.usageTracker,
+              onUpgrade: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Upgrade button pressed!')),
+                );
+              },
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          'Usage limit banner:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        RaptrAIUsageLimitBanner(
+          message: 'You\'re approaching your daily token limit (80% used).',
+          action: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('View usage details')),
+            );
+          },
+          actionLabel: 'View',
+          onDismiss: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Banner dismissed')),
+            );
+          },
+        ),
+        const SizedBox(height: 24),
+
+        // Retry Banners Section
+        const _SectionHeader(title: 'Retry Banners'),
+        const Text(
+          'Manual retry banner:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        if (_showRetryBanner)
+          RaptrAIRetryBanner(
+            message: 'Connection lost. Your message was not sent.',
+            onRetry: () {
+              setState(() => _showRetryBanner = false);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Retrying...')),
+              );
+            },
+            onDismiss: () {
+              setState(() => _showRetryBanner = false);
+            },
+          )
+        else
+          RaptrAIButton.outlined(
+            label: 'Show Retry Banner',
+            icon: Icons.refresh,
+            onPressed: () => setState(() => _showRetryBanner = true),
+          ),
+        const SizedBox(height: 16),
+        const Text(
+          'Auto-retry banner with countdown:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        if (_showAutoRetryBanner)
+          RaptrAIAutoRetryBanner(
+            message: 'Request failed. Retrying automatically...',
+            retryDelay: const Duration(seconds: 5),
+            onRetry: () {
+              setState(() => _showAutoRetryBanner = false);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Auto-retry triggered!')),
+              );
+            },
+            onCancel: () {
+              setState(() => _showAutoRetryBanner = false);
+            },
+          )
+        else
+          RaptrAIButton.outlined(
+            label: 'Show Auto-Retry Banner',
+            icon: Icons.timer,
+            onPressed: () => setState(() => _showAutoRetryBanner = true),
+          ),
+        const SizedBox(height: 24),
+
+        // Tool Approval Section
+        const _SectionHeader(title: 'Tool Approval'),
+        const Text(
+          'Inline tool approval card:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        RaptrAIToolApprovalCard(
+          toolCall: const RaptrAIToolCall(
+            id: 'call_demo_1',
+            name: 'get_weather',
+            arguments: {'location': 'San Francisco', 'unit': 'celsius'},
+          ),
+          toolDescription: 'Fetches current weather data for the specified location.',
+          onApprove: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Tool approved!')),
+            );
+          },
+          onDeny: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Tool denied!')),
+            );
+          },
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          'Tool approval dialog:',
+          style: TextStyle(fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        RaptrAIButton(
+          label: 'Show Approval Dialog',
+          icon: Icons.extension,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) => RaptrAIToolApprovalDialog(
+                toolCall: const RaptrAIToolCall(
+                  id: 'call_demo_2',
+                  name: 'web_search',
+                  arguments: {'query': 'Flutter best practices 2025', 'max_results': 10},
+                ),
+                toolDescription: 'Searches the web for relevant information.',
+                onApprove: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Tool approved!')),
+                  );
+                },
+                onDeny: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Tool denied!')),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 24),
+
+        // Approval Modes Section
+        const _SectionHeader(title: 'Tool Approval Modes'),
+        RaptrAICard(
+          style: RaptrAICardStyle.bordered,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _ApprovalModeRow(
+                  mode: RaptrAIToolApprovalMode.auto,
+                  description: 'Never ask, execute tools automatically',
+                  icon: Icons.flash_on,
+                ),
+                const Divider(height: 24),
+                _ApprovalModeRow(
+                  mode: RaptrAIToolApprovalMode.firstUse,
+                  description: 'Ask on first use of each tool',
+                  icon: Icons.verified_user,
+                ),
+                const Divider(height: 24),
+                _ApprovalModeRow(
+                  mode: RaptrAIToolApprovalMode.always,
+                  description: 'Always ask before executing tools',
+                  icon: Icons.security,
+                ),
+                const Divider(height: 24),
+                _ApprovalModeRow(
+                  mode: RaptrAIToolApprovalMode.never,
+                  description: 'Never execute tools (deny all)',
+                  icon: Icons.block,
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Code Example Section
+        const _SectionHeader(title: 'Usage Example'),
+        const RaptrAICodeBlock(
+          code: '''// Enable opinionated defaults in RaptrAIChat
+RaptrAIChat(
+  provider: openai,
+
+  // Error handling
+  onError: (error) {
+    // Errors automatically show RaptrAIErrorState
+  },
+
+  // Usage tracking with limits
+  usageTracker: RaptrAIUsageTracker(
+    limits: RaptrAIUsageLimits(
+      maxTokensPerDay: 100000,
+      maxRequestsPerMinute: 60,
+    ),
+    onLimitExceeded: (type) {
+      // Shows RaptrAIUsageLimitReached
+    },
+  ),
+
+  // Tool approval
+  toolApprovalMode: RaptrAIToolApprovalMode.firstUse,
+)''',
+          language: 'dart',
+        ),
+        const SizedBox(height: 40),
+      ],
+    );
+  }
+}
+
+class _ApprovalModeRow extends StatelessWidget {
+  const _ApprovalModeRow({
+    required this.mode,
+    required this.description,
+    required this.icon,
+  });
+
+  final RaptrAIToolApprovalMode mode;
+  final String description;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 20,
+          color: RaptrAIColors.accent,
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                mode.name,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: isDark
+                      ? RaptrAIColors.darkTextMuted
+                      : RaptrAIColors.lightTextMuted,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

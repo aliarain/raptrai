@@ -86,8 +86,8 @@ class RaptrAIUsageLimitReached extends StatelessWidget {
     final mutedColor = isDark ? RaptrAIColors.darkTextMuted : RaptrAIColors.lightTextMuted;
 
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(16),
@@ -95,66 +95,68 @@ class RaptrAIUsageLimitReached extends StatelessWidget {
           color: RaptrAIColors.warning.withValues(alpha: 0.3),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: RaptrAIColors.warning.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: RaptrAIColors.warning.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(_icon, color: RaptrAIColors.warning, size: 28),
             ),
-            child: Icon(_icon, color: RaptrAIColors.warning, size: 32),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            _title,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+            const SizedBox(height: 12),
+            Text(
+              _title,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            _subtitle,
-            style: TextStyle(color: mutedColor, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-          if (tracker != null) ...[
-            const SizedBox(height: 16),
-            _UsageStats(tracker: tracker!, isDark: isDark),
-          ],
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              if (onDismiss != null)
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: onDismiss,
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: mutedColor,
-                      side: BorderSide(color: mutedColor.withValues(alpha: 0.3)),
-                    ),
-                    child: const Text('Dismiss'),
-                  ),
-                ),
-              if (onDismiss != null && onUpgrade != null)
-                const SizedBox(width: 12),
-              if (onUpgrade != null)
-                Expanded(
-                  child: FilledButton(
-                    onPressed: onUpgrade,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: RaptrAIColors.accent,
-                    ),
-                    child: const Text('Upgrade'),
-                  ),
-                ),
+            const SizedBox(height: 6),
+            Text(
+              _subtitle,
+              style: TextStyle(color: mutedColor, fontSize: 13),
+              textAlign: TextAlign.center,
+            ),
+            if (tracker != null) ...[
+              const SizedBox(height: 12),
+              _UsageStats(tracker: tracker!, isDark: isDark),
             ],
-          ),
-        ],
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                if (onDismiss != null)
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: onDismiss,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: mutedColor,
+                        side: BorderSide(color: mutedColor.withValues(alpha: 0.3)),
+                      ),
+                      child: const Text('Dismiss'),
+                    ),
+                  ),
+                if (onDismiss != null && onUpgrade != null)
+                  const SizedBox(width: 12),
+                if (onUpgrade != null)
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: onUpgrade,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: RaptrAIColors.accent,
+                      ),
+                      child: const Text('Upgrade'),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -173,7 +175,7 @@ class _UsageStats extends StatelessWidget {
     final usage = tracker.currentUsage;
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: borderColor),
