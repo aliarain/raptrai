@@ -5,7 +5,7 @@
 
 **The Complete AI Framework for Flutter** - Build production-ready AI-powered apps in days, not months.
 
-RaptrAI provides everything you need: beautiful shadcn-inspired UI components, multi-provider AI integration (OpenAI, Anthropic, Google), conversation management, tool calling, persistence, and business features.
+RaptrAI provides everything you need: beautiful, modern UI components, multi-provider AI integration (OpenAI, Anthropic, Google), conversation management, tool calling, persistence, and business features.
 
 **A [raptrx.com](https://raptrx.com) product.**
 
@@ -72,7 +72,7 @@ await for (final chunk in openai.chat(
 
 ### Beautiful UI Components
 
-60+ pre-built, customizable components matching the shadcn/ui design system:
+60+ pre-built, customizable components with a modern, elegant design system:
 
 ```dart
 RaptrAIThread(
@@ -334,5 +334,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Credits
 
-- Inspired by [shadcn/ui](https://ui.shadcn.com) and [assistant-ui](https://www.assistant-ui.com)
-- A [raptrx.com](https://raptrx.com) product
+Built with care by the [raptrx.com](https://raptrx.com) team.

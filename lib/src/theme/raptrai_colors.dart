@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 /// RaptrAI color palette.
 ///
-/// Uses shadcn/ui zinc color scale for a modern, clean look.
-/// Matches the assistant-ui design system exactly.
+/// Uses zinc color scale for a modern, clean look.
+/// Carefully crafted for optimal AI chat interfaces.
 class RaptrAIColors {
   RaptrAIColors._();
 
   // ============================================
-  // Zinc Gray Scale (shadcn/ui default neutral)
+  // Zinc Gray Scale (Neutral Colors)
   // ============================================
 
   static const Color zinc50 = Color(0xFFFAFAFA);
@@ -40,7 +40,7 @@ class RaptrAIColors {
   static const Color slate950 = Color(0xFF020617);
 
   // ============================================
-  // Primary Accent Colors (Blue - shadcn default)
+  // Primary Accent Colors (Blue)
   // ============================================
 
   static const Color accent = Color(0xFF3B82F6); // blue-500
@@ -98,7 +98,7 @@ class RaptrAIColors {
   static const Color lightAssistantBubbleText = zinc900;
 
   // ============================================
-  // Dark Theme Colors (using zinc - assistant-ui style)
+  // Dark Theme Colors (using zinc)
   // ============================================
 
   static const Color darkBackground = zinc950; // #09090B
@@ -134,7 +134,7 @@ class RaptrAIColors {
   );
 
   // ============================================
-  // Spacing Constants (shadcn-style)
+  // Spacing Constants
   // ============================================
 
   static const double spacingXs = 4;
@@ -145,7 +145,7 @@ class RaptrAIColors {
   static const double spacing2xl = 32;
 
   // ============================================
-  // Border Radius Constants (shadcn-style)
+  // Border Radius Constants
   // ============================================
 
   static const double radiusSm = 6;
@@ -210,7 +210,7 @@ class RaptrAIColorScheme {
     );
   }
 
-  /// Dark color scheme with default blue accent (assistant-ui style).
+  /// Dark color scheme with default blue accent.
   factory RaptrAIColorScheme.dark({Color? accent}) {
     final accentColor = accent ?? RaptrAIColors.accent;
     return RaptrAIColorScheme(

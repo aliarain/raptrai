@@ -28,7 +28,7 @@
 ///   print(chunk.content);
 /// }
 ///
-/// // Use assistant-ui style components
+/// // Use RaptrAI components
 /// RaptrAIThread(
 ///   welcome: RaptrAIThreadWelcome(
 ///     greeting: 'Hello there!',
@@ -68,7 +68,7 @@ export 'src/business/analytics.dart';
 // High-Level Widgets
 export 'widgets/raptrai_chat.dart';
 
-// Assistant-UI Style Components
+// Thread & Assistant Components
 // Hide conflicting names that are also defined in provider_interface.dart
 export 'src/assistant/assistant_modal.dart';
 export 'src/assistant/composer.dart';

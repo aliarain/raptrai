@@ -22,8 +22,8 @@ class RaptrAISuggestion {
 
 /// Welcome screen displayed when thread has no messages.
 ///
-/// Matches assistant-ui ThreadWelcome component with greeting,
-/// subtitle, and suggestion cards.
+/// Displays a greeting, subtitle, and suggestion cards to help
+/// users get started with the conversation.
 class RaptrAIThreadWelcome extends StatelessWidget {
   const RaptrAIThreadWelcome({
     required this.greeting,
@@ -208,7 +208,7 @@ class _SuggestionCard extends StatelessWidget {
 
 /// Scrollable message list component.
 ///
-/// Matches assistant-ui ThreadMessages with auto-scroll behavior.
+/// Displays messages with auto-scroll behavior when new messages arrive.
 class RaptrAIThreadMessages extends StatefulWidget {
   const RaptrAIThreadMessages({
     required this.messages,
@@ -363,7 +363,7 @@ class RaptrAIThreadScrollToBottom extends StatelessWidget {
 
 /// Main thread container that combines messages and composer.
 ///
-/// Matches assistant-ui Thread component structure.
+/// The primary container for AI chat conversations.
 class RaptrAIThread extends StatelessWidget {
   const RaptrAIThread({
     super.key,

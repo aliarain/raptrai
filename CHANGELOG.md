@@ -45,7 +45,7 @@ All notable changes to this project will be documented in this file.
 - `RaptrAIChat` - Complete AI chat with all features integrated
 - `RaptrAIChatWithSidebar` - Full chat experience with thread list
 
-#### Assistant-UI Style Components
+#### Thread & Assistant Components
 - `RaptrAIThread` - Main chat container with messages and composer
 - `RaptrAIThreadWelcome` - Welcome screen with greeting and suggestions
 - `RaptrAIThreadMessages` - Scrollable message list with auto-scroll
@@ -84,6 +84,6 @@ All notable changes to this project will be documented in this file.
 
 #### Theme System
 - `RaptrAITheme` - Light and dark theme support
-- `RaptrAIColors` - shadcn/ui-inspired color system (Zinc scale)
+- `RaptrAIColors` - Modern color system (Zinc scale)
 - `RaptrAITypography` - Inter font with consistent text styles
 - Fully customizable accent colors

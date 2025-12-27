@@ -31,7 +31,7 @@ class RaptrAIThreadData {
 
 /// Button to create a new thread.
 ///
-/// Matches assistant-ui ThreadListNew.
+/// RaptrAI ThreadListNew.
 class RaptrAIThreadListNew extends StatelessWidget {
   const RaptrAIThreadListNew({
     super.key,
@@ -89,7 +89,7 @@ class RaptrAIThreadListNew extends StatelessWidget {
 
 /// Individual thread item in the list.
 ///
-/// Matches assistant-ui ThreadListItem.
+/// RaptrAI ThreadListItem.
 class RaptrAIThreadListItem extends StatefulWidget {
   const RaptrAIThreadListItem({
     required this.thread,
@@ -206,7 +206,7 @@ class _RaptrAIThreadListItemState extends State<RaptrAIThreadListItem> {
 
 /// Skeleton loading placeholder for thread items.
 ///
-/// Matches assistant-ui ThreadListSkeleton with shimmer effect.
+/// RaptrAI ThreadListSkeleton with shimmer effect.
 class RaptrAIThreadListSkeleton extends StatelessWidget {
   const RaptrAIThreadListSkeleton({
     super.key,
@@ -280,7 +280,7 @@ class RaptrAIThreadListSkeleton extends StatelessWidget {
 
 /// Complete thread list sidebar component.
 ///
-/// Matches assistant-ui ThreadList with header, items, and footer.
+/// RaptrAI ThreadList with header, items, and footer.
 class RaptrAIThreadList extends StatelessWidget {
   const RaptrAIThreadList({
     super.key,

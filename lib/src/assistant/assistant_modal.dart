@@ -4,7 +4,7 @@ import 'package:raptrai/src/theme/raptrai_theme.dart';
 
 /// Floating action button to trigger the assistant modal.
 ///
-/// Matches assistant-ui AssistantModalTrigger.
+/// RaptrAI AssistantModalTrigger.
 class RaptrAIAssistantModalTrigger extends StatelessWidget {
   const RaptrAIAssistantModalTrigger({
     super.key,
@@ -47,7 +47,7 @@ class RaptrAIAssistantModalTrigger extends StatelessWidget {
 
 /// Floating chat modal component.
 ///
-/// Matches assistant-ui AssistantModal for bottom-right floating chat.
+/// RaptrAI AssistantModal for bottom-right floating chat.
 class RaptrAIAssistantModal extends StatelessWidget {
   const RaptrAIAssistantModal({
     required this.child,
@@ -278,7 +278,7 @@ enum RaptrAIModalPosition {
 
 /// Model selector dropdown.
 ///
-/// Matches assistant-ui style model picker.
+/// RaptrAI style model picker.
 class RaptrAIModelSelector extends StatelessWidget {
   const RaptrAIModelSelector({
     required this.models,
@@ -405,7 +405,7 @@ class RaptrAIModel {
 
 /// Branch picker for navigating message versions.
 ///
-/// Matches assistant-ui BranchPicker.
+/// RaptrAI BranchPicker.
 class RaptrAIBranchPicker extends StatelessWidget {
   const RaptrAIBranchPicker({
     required this.currentIndex,

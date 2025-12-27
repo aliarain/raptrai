@@ -1,9 +1,9 @@
 name: raptrai
-description: A shadcn-inspired, flexible & responsive Flutter UI framework for building beautiful AI chat interfaces. Adaptive to all screen sizes. A raptrx.com product.
+description: The complete AI framework for Flutter. Beautiful UI components, multi-provider AI integration, conversation management, and more. A raptrx.com product.
 version: 0.1.0
 homepage: https://raptrx.com
-repository: https://github.com/raptrx/raptrai
-issue_tracker: https://github.com/raptrx/raptrai/issues
+repository: https://github.com/aliarain/raptrai
+issue_tracker: https://github.com/aliarain/raptrai/issues
 documentation: https://pub.dev/documentation/raptrai/latest/
 
 environment:
@@ -28,9 +28,17 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-topics:
-  - ai
-  - chat
-  - ui
-  - shadcn
-  - responsive
+# topics:
+#   - ai framework
+#   - chat
+#   - ui components
+#   - flutter framework
+#   - responsive design
+#   - openai
+#   - anthropic
+#   - google
+#   - hive
+#   - flutter
+#   - dart
+#   - mobile
+#   - desktop

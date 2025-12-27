@@ -12,7 +12,7 @@ enum RaptrAIMessageRole {
 
 /// User message component.
 ///
-/// Matches assistant-ui UserMessage with right-aligned bubble.
+/// Displays user messages with right-aligned bubble styling.
 class RaptrAIUserMessage extends StatelessWidget {
   const RaptrAIUserMessage({
     required this.content,
@@ -83,7 +83,7 @@ class RaptrAIUserMessage extends StatelessWidget {
 
 /// Assistant message component.
 ///
-/// Matches assistant-ui AssistantMessage with avatar and left-aligned content.
+/// RaptrAI AssistantMessage with avatar and left-aligned content.
 class RaptrAIAssistantMessage extends StatefulWidget {
   const RaptrAIAssistantMessage({
     required this.content,
@@ -243,7 +243,7 @@ class _StreamingCursorState extends State<_StreamingCursor>
 
 /// Action buttons for messages.
 ///
-/// Matches assistant-ui MessageActions with copy, edit, regenerate.
+/// RaptrAI MessageActions with copy, edit, regenerate.
 class RaptrAIMessageActions extends StatelessWidget {
   const RaptrAIMessageActions({
     super.key,
@@ -363,7 +363,7 @@ class _ActionButton extends StatelessWidget {
 
 /// Generic message container that can be user or assistant.
 ///
-/// Matches assistant-ui Message component.
+/// RaptrAI Message component.
 class RaptrAIMessage extends StatelessWidget {
   const RaptrAIMessage({
     required this.content,
@@ -430,7 +430,7 @@ class RaptrAIMessage extends StatelessWidget {
 
 /// Edit composer for editing messages inline.
 ///
-/// Matches assistant-ui EditComposer.
+/// RaptrAI EditComposer.
 class RaptrAIEditComposer extends StatefulWidget {
   const RaptrAIEditComposer({
     required this.initialContent,

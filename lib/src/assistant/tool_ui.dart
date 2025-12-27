@@ -42,7 +42,7 @@ class RaptrAIToolCallData {
 
 /// Progress indicator for tool execution.
 ///
-/// Matches assistant-ui ToolCallProgress.
+/// RaptrAI ToolCallProgress.
 class RaptrAIToolCallProgress extends StatelessWidget {
   const RaptrAIToolCallProgress({
     super.key,
@@ -81,7 +81,7 @@ class RaptrAIToolCallProgress extends StatelessWidget {
 
 /// Display for tool call result.
 ///
-/// Matches assistant-ui ToolCallResult.
+/// RaptrAI ToolCallResult.
 class RaptrAIToolCallResult extends StatelessWidget {
   const RaptrAIToolCallResult({
     required this.result,
@@ -135,7 +135,7 @@ class RaptrAIToolCallResult extends StatelessWidget {
 
 /// Complete tool call display component.
 ///
-/// Matches assistant-ui ToolCall with collapsible card.
+/// RaptrAI ToolCall with collapsible card.
 class RaptrAIToolCallWidget extends StatefulWidget {
   const RaptrAIToolCallWidget({
     required this.toolCall,

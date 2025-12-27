@@ -9,7 +9,7 @@ export 'package:raptrai/src/providers/provider_types.dart'
 
 /// Text input field for the composer.
 ///
-/// Matches assistant-ui ComposerInput with auto-resize and placeholder.
+/// RaptrAI ComposerInput with auto-resize and placeholder.
 class RaptrAIComposerInput extends StatelessWidget {
   const RaptrAIComposerInput({
     super.key,
@@ -80,7 +80,7 @@ class RaptrAIComposerInput extends StatelessWidget {
 
 /// Button to add attachments.
 ///
-/// Matches assistant-ui ComposerAddAttachment.
+/// RaptrAI ComposerAddAttachment.
 class RaptrAIComposerAddAttachment extends StatelessWidget {
   const RaptrAIComposerAddAttachment({
     super.key,
@@ -124,7 +124,7 @@ class RaptrAIComposerAddAttachment extends StatelessWidget {
 
 /// Send button for the composer.
 ///
-/// Matches assistant-ui ComposerSend with circular style.
+/// RaptrAI ComposerSend with circular style.
 class RaptrAIComposerSend extends StatelessWidget {
   const RaptrAIComposerSend({
     super.key,
@@ -212,7 +212,7 @@ class RaptrAIComposerStop extends StatelessWidget {
 
 /// Attachment preview area.
 ///
-/// Matches assistant-ui ComposerAttachments.
+/// RaptrAI ComposerAttachments.
 class RaptrAIComposerAttachments extends StatelessWidget {
   const RaptrAIComposerAttachments({
     required this.attachments,
@@ -343,7 +343,7 @@ class _AttachmentChip extends StatelessWidget {
 
 /// Complete composer component.
 ///
-/// Matches assistant-ui Composer with input, attachments, and send button.
+/// RaptrAI Composer with input, attachments, and send button.
 class RaptrAIComposer extends StatefulWidget {
   const RaptrAIComposer({
     super.key,

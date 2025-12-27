@@ -5,12 +5,12 @@ import 'raptrai_colors.dart';
 
 /// RaptrAI Theme configuration.
 ///
-/// Provides pre-configured light and dark themes that match the
-/// assistant-ui / shadcn design system.
+/// Provides pre-configured light and dark themes with a modern,
+/// elegant design system optimized for AI chat interfaces.
 class RaptrAITheme {
   RaptrAITheme._();
 
-  /// Inter text theme for shadcn/assistant-ui style.
+  /// Inter text theme for modern UI style.
   static TextTheme get _interTextTheme {
     return GoogleFonts.interTextTheme();
   }
@@ -155,7 +155,7 @@ class RaptrAITheme {
   }
 
   /// Creates a dark theme with optional accent color customization.
-  /// Matches assistant-ui / shadcn dark mode exactly.
+  /// Features a modern dark mode optimized for AI chat interfaces.
   static ThemeData dark({Color? accentColor}) {
     final accent = accentColor ?? RaptrAIColors.accent;
     final textTheme = _interTextTheme;
@@ -323,7 +323,7 @@ class RaptrAIThemeData extends InheritedWidget {
   }
 }
 
-/// Typography constants matching assistant-ui / shadcn styles.
+/// Typography constants for RaptrAI's modern design system.
 class RaptrAITypography {
   RaptrAITypography._();
 
