@@ -6,6 +6,9 @@ repository: https://github.com/aliarain/raptrai
 issue_tracker: https://github.com/aliarain/raptrai/issues
 documentation: https://pub.dev/documentation/raptrai/latest/
 
+executables:
+  raptrai:
+
 environment:
   sdk: ^3.0.0
   flutter: ">=3.10.0"

@@ -98,9 +98,29 @@ RaptrAIChat(storage: RaptrAIHiveStorage())
 | [TOOLS.md](docs/TOOLS.md) | Create and customize tools |
 | [THEMING.md](docs/THEMING.md) | Override message rendering |
 
+## CLI (Templates)
+
+Add pre-built screens to your project:
+
+```bash
+# List available templates
+dart run raptrai list
+
+# Add a template
+dart run raptrai add basic-chat
+dart run raptrai add tool-calling --path lib/features/ai
+dart run raptrai add multi-thread
+```
+
 ## API Reference
 
 Full documentation: [raptrai.raptrx.com](https://raptrai.raptrx.com)
+
+## Roadmap
+
+- **More providers** — Community-driven integrations
+- **More templates** — Real-world app patterns
+- **Stability & DX** — Polish based on feedback
 
 ## License
 
