@@ -1,0 +1,19 @@
+name: basic_chat
+description: Minimal AI chat in under 50 lines.
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  raptrai:
+    path: ../..
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

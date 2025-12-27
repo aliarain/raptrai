@@ -104,3 +104,9 @@ export 'src/prompt/prompt_suggestions.dart';
 // Theme
 export 'src/theme/raptrai_colors.dart';
 export 'src/theme/raptrai_theme.dart';
+
+// Default UX Widgets
+export 'src/defaults/error_state.dart';
+export 'src/defaults/usage_limit.dart';
+export 'src/defaults/retry_banner.dart';
+export 'src/defaults/tool_approval.dart';
