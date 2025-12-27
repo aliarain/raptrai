@@ -199,142 +199,44 @@ class MockAIProvider extends RaptrAIProvider {
 }
 
 // =============================================================================
-// MOCK STORAGE - In-memory storage implementation
+// MOCK STORAGE - Uses library's RaptrAIMemoryStorage with sample data
 // =============================================================================
 
-class MockStorage extends RaptrAIStorage with RaptrAIStorageNotifier {
-  final Map<String, RaptrAIConversation> _conversations = {};
-  bool _isInitialized = false;
+/// Creates and initializes a memory storage with sample conversations.
+Future<RaptrAIMemoryStorage> createMockStorage() async {
+  final storage = RaptrAIMemoryStorage();
+  await storage.initialize();
 
-  @override
-  Future<void> initialize() async {
-    if (_isInitialized) return;
+  // Add some sample conversations
+  final now = DateTime.now();
 
-    // Add some sample conversations
-    final now = DateTime.now();
-    _conversations['conv_sample_1'] = RaptrAIConversation(
-      id: 'conv_sample_1',
-      title: 'Welcome Chat',
-      messages: [
-        RaptrAIConversationMessage.user('Hello! What can you do?'),
-        RaptrAIConversationMessage.assistant(
-          'Hi! I\'m RaptrAI assistant. I can help you with coding, answer questions, and much more!',
-        ),
-      ],
-      createdAt: now.subtract(const Duration(days: 1)),
-      updatedAt: now.subtract(const Duration(days: 1)),
-    );
+  await storage.saveConversation(RaptrAIConversation(
+    id: 'conv_sample_1',
+    title: 'Welcome Chat',
+    messages: [
+      RaptrAIConversationMessage.user('Hello! What can you do?'),
+      RaptrAIConversationMessage.assistant(
+        'Hi! I\'m RaptrAI assistant. I can help you with coding, answer questions, and much more!',
+      ),
+    ],
+    createdAt: now.subtract(const Duration(days: 1)),
+    updatedAt: now.subtract(const Duration(days: 1)),
+  ));
 
-    _conversations['conv_sample_2'] = RaptrAIConversation(
-      id: 'conv_sample_2',
-      title: 'Flutter Tips',
-      messages: [
-        RaptrAIConversationMessage.user('Give me some Flutter performance tips'),
-        RaptrAIConversationMessage.assistant(
-          'Here are some Flutter performance tips:\n\n1. Use const constructors\n2. Implement ListView.builder for long lists\n3. Cache expensive computations\n4. Use RepaintBoundary wisely',
-        ),
-      ],
-      createdAt: now.subtract(const Duration(hours: 5)),
-      updatedAt: now.subtract(const Duration(hours: 5)),
-    );
+  await storage.saveConversation(RaptrAIConversation(
+    id: 'conv_sample_2',
+    title: 'Flutter Tips',
+    messages: [
+      RaptrAIConversationMessage.user('Give me some Flutter performance tips'),
+      RaptrAIConversationMessage.assistant(
+        'Here are some Flutter performance tips:\n\n1. Use const constructors\n2. Implement ListView.builder for long lists\n3. Cache expensive computations\n4. Use RepaintBoundary wisely',
+      ),
+    ],
+    createdAt: now.subtract(const Duration(hours: 5)),
+    updatedAt: now.subtract(const Duration(hours: 5)),
+  ));
 
-    _isInitialized = true;
-  }
-
-  @override
-  Future<void> close() async {
-    closeEventController();
-  }
-
-  @override
-  Future<void> saveConversation(RaptrAIConversation conversation) async {
-    final isNew = !_conversations.containsKey(conversation.id);
-    _conversations[conversation.id] = conversation;
-
-    emitEvent(RaptrAIStorageEvent(
-      type: isNew ? RaptrAIStorageEventType.created : RaptrAIStorageEventType.updated,
-      conversationId: conversation.id,
-      conversation: conversation,
-    ));
-  }
-
-  @override
-  Future<RaptrAIConversation?> loadConversation(String id) async {
-    return _conversations[id];
-  }
-
-  @override
-  Future<RaptrAIConversationList> listConversations({
-    int limit = 20,
-    String? cursor,
-    String? userId,
-  }) async {
-    final sorted = _conversations.values.toList()
-      ..sort((a, b) => (b.updatedAt ?? DateTime.now()).compareTo(a.updatedAt ?? DateTime.now()));
-
-    return RaptrAIConversationList(
-      conversations: sorted.take(limit).toList(),
-      hasMore: sorted.length > limit,
-      totalCount: sorted.length,
-    );
-  }
-
-  @override
-  Future<void> deleteConversation(String id) async {
-    _conversations.remove(id);
-    emitEvent(RaptrAIStorageEvent(
-      type: RaptrAIStorageEventType.deleted,
-      conversationId: id,
-    ));
-  }
-
-  @override
-  Future<void> deleteAllConversations({String? userId}) async {
-    _conversations.clear();
-  }
-
-  @override
-  Stream<RaptrAIConversation> watchConversation(String id) {
-    return events
-        .where((e) => e.conversationId == id && e.conversation != null)
-        .map((e) => e.conversation!);
-  }
-
-  @override
-  Stream<RaptrAIConversationList> watchConversations({int limit = 20, String? userId}) {
-    return events.asyncMap((_) => listConversations(limit: limit, userId: userId));
-  }
-
-  @override
-  Future<List<RaptrAIConversation>> searchConversations(String query, {int limit = 20, String? userId}) async {
-    final lowerQuery = query.toLowerCase();
-    return _conversations.values
-        .where((c) =>
-            (c.title?.toLowerCase().contains(lowerQuery) ?? false) ||
-            c.messages.any((m) => m.content.toLowerCase().contains(lowerQuery)))
-        .take(limit)
-        .toList();
-  }
-
-  @override
-  Future<bool> conversationExists(String id) async {
-    return _conversations.containsKey(id);
-  }
-
-  @override
-  Future<int> getConversationCount({String? userId}) async {
-    return _conversations.length;
-  }
-
-  @override
-  Future<String> exportAllConversations({String? userId}) async {
-    return _conversations.values.map((c) => c.toJson()).toString();
-  }
-
-  @override
-  Future<void> importConversations(String json, {bool overwrite = false}) async {
-    // Not implemented for mock
-  }
+  return storage;
 }
 
 // =============================================================================
@@ -479,15 +381,15 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   late final MockAIProvider _mockProvider;
-  late final MockStorage _mockStorage;
+  RaptrAIMemoryStorage? _mockStorage;
   late final RaptrAIToolRegistry _toolRegistry;
   late final RaptrAIUsageTracker _usageTracker;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _mockProvider = MockAIProvider();
-    _mockStorage = MockStorage();
     _toolRegistry = createMockToolRegistry();
     _usageTracker = RaptrAIUsageTracker(
       limits: const RaptrAIUsageLimits(
@@ -502,14 +404,29 @@ class _MainScreenState extends State<MainScreen> {
         debugPrint('[Usage] Limit exceeded: $limitType');
       },
     );
+    _initStorage();
+  }
+
+  Future<void> _initStorage() async {
+    _mockStorage = await createMockStorage();
+    if (mounted) {
+      setState(() => _isInitialized = true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isInitialized || _mockStorage == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('RaptrAI Demo')),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     final screens = [
       FullChatDemo(
         provider: _mockProvider,
-        storage: _mockStorage,
+        storage: _mockStorage!,
         toolRegistry: _toolRegistry,
         usageTracker: _usageTracker,
       ),
