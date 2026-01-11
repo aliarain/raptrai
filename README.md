@@ -44,9 +44,9 @@ Copy, change API key, run:
 
 | Example | Description |
 |---------|-------------|
-| [basic_chat](examples/basic_chat) | Minimal AI chat in ~40 lines |
-| [tool_calling](examples/tool_calling) | Weather + calculator function calling |
-| [multi_thread](examples/multi_thread) | Conversation history with sidebar |
+| [basic_chat](example_apps/basic_chat) | Minimal AI chat in ~40 lines |
+| [tool_calling](example_apps/tool_calling) | Weather + calculator function calling |
+| [multi_thread](example_apps/multi_thread) | Conversation history with sidebar |
 
 ## Providers
 
@@ -93,10 +93,10 @@ RaptrAIChat(storage: RaptrAIHiveStorage())
 
 | Guide | What you'll learn |
 |-------|-------------------|
-| [PROVIDERS.md](docs/PROVIDERS.md) | Add a custom AI provider |
-| [STORAGE.md](docs/STORAGE.md) | Implement custom persistence |
-| [TOOLS.md](docs/TOOLS.md) | Create and customize tools |
-| [THEMING.md](docs/THEMING.md) | Override message rendering |
+| [PROVIDERS.md](doc/PROVIDERS.md) | Add a custom AI provider |
+| [STORAGE.md](doc/STORAGE.md) | Implement custom persistence |
+| [TOOLS.md](doc/TOOLS.md) | Create and customize tools |
+| [THEMING.md](doc/THEMING.md) | Override message rendering |
 
 ## CLI (Templates)
 
