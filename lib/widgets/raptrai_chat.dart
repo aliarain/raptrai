@@ -135,6 +135,7 @@ class _RaptrAIChatState extends State<RaptrAIChat> {
   RaptrAIToolExecutor? _toolExecutor;
   String? _selectedModel;
   bool _isInitialized = false;
+  List<RaptrAIAttachment> _attachments = [];
 
   @override
   void initState() {
@@ -263,8 +264,11 @@ class _RaptrAIChatState extends State<RaptrAIChat> {
       attachmentCount: attachments.length,
     );
 
-    // Clear input
+    // Clear input and attachments
     _composerController.clear();
+    setState(() {
+      _attachments = [];
+    });
 
     // Send the message
     await _controller.send(content, attachments: attachments);
@@ -306,6 +310,25 @@ class _RaptrAIChatState extends State<RaptrAIChat> {
       conversationId: _controller.conversation.id,
     );
     _controller.stop();
+  }
+
+  Future<void> _handleAddAttachment() async {
+    final attachment = await RaptrAIAttachmentPicker.showPicker(context);
+    if (attachment != null && mounted) {
+      setState(() {
+        _attachments.add(attachment);
+      });
+      RaptrAIAnalytics.track(
+        RaptrAIEventType.attachmentAdded,
+        conversationId: _controller.conversation.id,
+      );
+    }
+  }
+
+  void _handleRemoveAttachment(RaptrAIAttachment attachment) {
+    setState(() {
+      _attachments.remove(attachment);
+    });
   }
 
   void _scrollToBottom() {
@@ -433,6 +456,9 @@ class _RaptrAIChatState extends State<RaptrAIChat> {
       placeholder: widget.placeholder,
       isGenerating: _controller.isGenerating,
       autofocus: widget.autofocus,
+      attachments: _attachments,
+      onAddAttachment: _handleAddAttachment,
+      onRemoveAttachment: _handleRemoveAttachment,
       onSend: (content, attachments) {
         _handleSend(content, attachments);
       },
