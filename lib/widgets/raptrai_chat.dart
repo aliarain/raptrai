@@ -339,45 +339,58 @@ class _RaptrAIChatState extends State<RaptrAIChat> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Column(
-      children: [
-        // Messages or welcome screen
-        Expanded(
-          child: _controller.messages.isEmpty
-              ? _buildWelcomeScreen()
-              : _buildMessageList(),
-        ),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? RaptrAIColors.zinc950 : RaptrAIColors.zinc50;
 
-        // Composer
-        if (!widget.readOnly) _buildComposer(),
-      ],
+    return Container(
+      color: bgColor,
+      child: SafeArea(
+        child: Column(
+          children: [
+            // Messages or welcome screen (scrollable)
+            Expanded(
+              child: _controller.messages.isEmpty
+                  ? _buildWelcomeScreen()
+                  : _buildMessageList(),
+            ),
+
+            // Floating composer at bottom
+            if (!widget.readOnly) _buildComposer(),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildWelcomeScreen() {
-    return RaptrAIThreadWelcome(
-      greeting: widget.welcomeGreeting,
-      subtitle: widget.welcomeSubtitle,
-      suggestions: widget.suggestions ?? const [],
-      onSuggestionTap: (suggestion) {
-        _composerController.text = suggestion.title;
-        if (suggestion.subtitle != null) {
-          _composerController.text += ' ${suggestion.subtitle}';
-        }
-      },
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: RaptrAIThreadWelcome(
+          greeting: widget.welcomeGreeting,
+          subtitle: widget.welcomeSubtitle,
+          suggestions: widget.suggestions ?? const [],
+          onSuggestionTap: (suggestion) {
+            _composerController.text = suggestion.title;
+            if (suggestion.subtitle != null) {
+              _composerController.text += ' ${suggestion.subtitle}';
+            }
+          },
+        ),
+      ),
     );
   }
 
   Widget _buildMessageList() {
     return ListView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       itemCount: _controller.messages.length + (_controller.isGenerating ? 1 : 0),
       itemBuilder: (context, index) {
         // Show streaming message at the end
         if (index == _controller.messages.length && _controller.isGenerating) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 20),
             child: RaptrAIAssistantMessage(
               content: _controller.streamingContent,
               isStreaming: true,
@@ -387,7 +400,7 @@ class _RaptrAIChatState extends State<RaptrAIChat> {
 
         final message = _controller.messages[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.only(bottom: 20),
           child: _buildMessage(message),
         );
       },

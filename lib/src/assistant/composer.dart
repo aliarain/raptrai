@@ -343,11 +343,11 @@ class _AttachmentChip extends StatelessWidget {
 
 /// Complete composer component.
 ///
-/// RaptrAI Composer with input, attachments, and send button.
+/// Modern floating chat input bar with pill design.
 class RaptrAIComposer extends StatefulWidget {
   const RaptrAIComposer({
     super.key,
-    this.placeholder = 'Send a message...',
+    this.placeholder = 'Message...',
     this.onSend,
     this.onAddAttachment,
     this.onRemoveAttachment,
@@ -441,72 +441,171 @@ class _RaptrAIComposerState extends State<RaptrAIComposer> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor =
-        isDark ? RaptrAIColors.darkSurfaceVariant : RaptrAIColors.lightSurfaceVariant;
-    final borderColor = isDark ? RaptrAIColors.darkBorder : RaptrAIColors.lightBorder;
+    final bgColor = isDark ? RaptrAIColors.zinc800 : Colors.white;
+    final borderColor = isDark
+        ? RaptrAIColors.zinc700
+        : RaptrAIColors.zinc200;
+    final shadowColor = isDark
+        ? Colors.black.withValues(alpha: 0.3)
+        : Colors.black.withValues(alpha: 0.08);
 
     return Container(
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       decoration: BoxDecoration(
         color: bgColor,
-        border: Border.all(color: borderColor),
-        borderRadius: BorderRadius.circular(RaptrAIColors.radiusLg),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: borderColor, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Attachments
+          // Attachments preview
           if (widget.attachments.isNotEmpty) ...[
-            RaptrAIComposerAttachments(
-              attachments: widget.attachments,
-              onRemove: widget.onRemoveAttachment,
-            ),
-            Divider(
-              height: 1,
-              color: borderColor,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: RaptrAIComposerAttachments(
+                attachments: widget.attachments,
+                onRemove: widget.onRemoveAttachment,
+              ),
             ),
           ],
-          // Input row
+          // Main input row
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: RaptrAIColors.spacingMd,
-              vertical: RaptrAIColors.spacingSm,
-            ),
+            padding: const EdgeInsets.fromLTRB(6, 6, 6, 6),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Add attachment button
+                // Attachment button
                 if (widget.showAttachmentButton)
-                  RaptrAIComposerAddAttachment(
+                  _buildIconButton(
+                    context,
+                    icon: Icons.add_circle_outline,
                     onTap: widget.onAddAttachment,
+                    tooltip: 'Add attachment',
                   ),
                 // Input field
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: RaptrAIColors.spacingSm,
-                      vertical: RaptrAIColors.spacingXs,
-                    ),
-                    child: RaptrAIComposerInput(
+                  child: Container(
+                    constraints: const BoxConstraints(maxHeight: 120),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: TextField(
                       controller: _controller,
                       focusNode: _focusNode,
-                      placeholder: widget.placeholder,
                       autofocus: widget.autofocus,
-                      onSubmitted: (_) => _handleSend(),
+                      maxLines: null,
+                      textInputAction: TextInputAction.newline,
+                      keyboardType: TextInputType.multiline,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: isDark ? RaptrAIColors.zinc100 : RaptrAIColors.zinc900,
+                        height: 1.4,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: widget.placeholder,
+                        hintStyle: TextStyle(
+                          fontSize: 16,
+                          color: isDark ? RaptrAIColors.zinc500 : RaptrAIColors.zinc400,
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                        isDense: true,
+                      ),
                     ),
                   ),
                 ),
-                // Send/Stop button
-                if (widget.isGenerating)
-                  RaptrAIComposerStop(onTap: widget.onStop)
-                else
-                  RaptrAIComposerSend(
-                    onTap: _handleSend,
-                    disabled: !_hasText && widget.attachments.isEmpty,
-                  ),
+                // Send or Stop button
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: widget.isGenerating
+                      ? _buildStopButton(context)
+                      : _buildSendButton(context),
+                ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildIconButton(
+    BuildContext context, {
+    required IconData icon,
+    VoidCallback? onTap,
+    String? tooltip,
+  }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDark ? RaptrAIColors.zinc400 : RaptrAIColors.zinc500;
+
+    return Tooltip(
+      message: tooltip ?? '',
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Icon(icon, size: 22, color: iconColor),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSendButton(BuildContext context) {
+    final canSend = _hasText || widget.attachments.isNotEmpty;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      child: Material(
+        color: canSend ? RaptrAIColors.accent : Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
+          onTap: canSend ? _handleSend : null,
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: 36,
+            height: 36,
+            alignment: Alignment.center,
+            child: Icon(
+              Icons.arrow_upward_rounded,
+              size: 20,
+              color: canSend ? Colors.white : RaptrAIColors.zinc400,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStopButton(BuildContext context) {
+    return Material(
+      color: RaptrAIColors.zinc700,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        onTap: widget.onStop,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          width: 36,
+          height: 36,
+          alignment: Alignment.center,
+          child: Container(
+            width: 14,
+            height: 14,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+        ),
       ),
     );
   }

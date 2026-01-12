@@ -1,6 +1,6 @@
 name: raptrai
 description: The opinionated AI UI + runtime toolkit for Flutter. Like shadcn/ui for AI apps. Multi-provider support (OpenAI, Anthropic, Google), beautiful components, and production-ready features.
-version: 0.1.0
+version: 0.1.1
 homepage: https://raptrx.com
 repository: https://github.com/aliarain/raptrai
 issue_tracker: https://github.com/aliarain/raptrai/issues

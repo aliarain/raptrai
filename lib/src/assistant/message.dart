@@ -37,31 +37,39 @@ class RaptrAIUserMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? RaptrAIColors.darkUserBubble : RaptrAIColors.lightUserBubble;
-    final textColor =
-        isDark ? RaptrAIColors.darkUserBubbleText : RaptrAIColors.lightUserBubbleText;
+    final bgColor = isDark ? RaptrAIColors.zinc700 : RaptrAIColors.zinc200;
+    final textColor = isDark ? RaptrAIColors.zinc100 : RaptrAIColors.zinc900;
 
     return Align(
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.75,
+          maxWidth: MediaQuery.of(context).size.width * 0.8,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: RaptrAIColors.spacingLg,
-                vertical: RaptrAIColors.spacingMd,
+                horizontal: 16,
+                vertical: 12,
               ),
               decoration: BoxDecoration(
                 color: bgColor,
-                borderRadius: BorderRadius.circular(RaptrAIColors.radiusLg),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(6),
+                ),
               ),
               child: Text(
                 content,
-                style: RaptrAITypography.body(color: textColor),
+                style: TextStyle(
+                  fontSize: 15,
+                  color: textColor,
+                  height: 1.45,
+                ),
               ),
             ),
             if (showActions) ...[
@@ -131,64 +139,75 @@ class _RaptrAIAssistantMessageState extends State<RaptrAIAssistantMessage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? RaptrAIColors.darkText : RaptrAIColors.lightText;
-    final avatarBg =
-        isDark ? RaptrAIColors.darkSurfaceVariant : RaptrAIColors.lightSurfaceVariant;
-    final avatarFg =
-        isDark ? RaptrAIColors.darkTextSecondary : RaptrAIColors.lightTextSecondary;
+    final textColor = isDark ? RaptrAIColors.zinc200 : RaptrAIColors.zinc800;
+    final avatarBg = isDark ? RaptrAIColors.zinc800 : RaptrAIColors.zinc100;
+    final avatarFg = isDark ? RaptrAIColors.zinc400 : RaptrAIColors.zinc600;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Avatar
-            widget.avatar ??
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: avatarBg,
-                    borderRadius: BorderRadius.circular(RaptrAIColors.radiusMd),
-                  ),
-                  child: Icon(
-                    widget.avatarIcon,
-                    size: 18,
-                    color: avatarFg,
-                  ),
-                ),
-            const SizedBox(width: RaptrAIColors.spacingMd),
-            // Content
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Message content
-                  SelectableText(
-                    widget.content,
-                    style: RaptrAITypography.body(color: textColor),
-                  ),
-                  // Streaming cursor
-                  if (widget.isStreaming)
-                    _StreamingCursor(),
-                  // Actions
-                  if (widget.showActions && !widget.isStreaming && _isHovered) ...[
-                    const SizedBox(height: RaptrAIColors.spacingSm),
-                    RaptrAIMessageActions(
-                      content: widget.content,
-                      showCopy: true,
-                      showRegenerate: widget.onRegenerate != null,
-                      onRegenerate: widget.onRegenerate,
-                      onCopy: widget.onCopy,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Avatar
+              widget.avatar ??
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: avatarBg,
+                      borderRadius: BorderRadius.circular(10),
                     ),
+                    child: Icon(
+                      widget.avatarIcon,
+                      size: 18,
+                      color: avatarFg,
+                    ),
+                  ),
+              const SizedBox(width: 12),
+              // Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Message content
+                    SelectableText(
+                      widget.content,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: textColor,
+                        height: 1.55,
+                      ),
+                    ),
+                    // Streaming cursor
+                    if (widget.isStreaming)
+                      _StreamingCursor(),
+                    // Actions - always visible on mobile, hover on desktop
+                    if (widget.showActions && !widget.isStreaming) ...[
+                      const SizedBox(height: 8),
+                      AnimatedOpacity(
+                        duration: const Duration(milliseconds: 150),
+                        opacity: _isHovered ? 1.0 : 0.5,
+                        child: RaptrAIMessageActions(
+                          content: widget.content,
+                          showCopy: true,
+                          showRegenerate: widget.onRegenerate != null,
+                          onRegenerate: widget.onRegenerate,
+                          onCopy: widget.onCopy,
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

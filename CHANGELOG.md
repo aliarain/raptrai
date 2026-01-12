@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2025-01-12
+
+### Improved
+
+- **Chat Input Bar**: Modern floating pill-style input with shadow and rounded corners
+- **Message Bubbles**: Cleaner user/assistant message styling with better typography
+- **Layout**: Improved spacing and padding throughout the chat interface
+- **Send Button**: Animated send button with smooth state transitions
+- **Stop Button**: Clean square icon for stopping generation
+
+### Fixed
+
+- Chat input now properly floats at bottom with safe area handling
+- Message list padding adjusted for better readability
+- Actions visibility improved (always visible with opacity animation)
+
 ## [0.1.0] - 2024-12-27
 
 ### Added
